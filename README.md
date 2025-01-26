@@ -35,7 +35,14 @@
 
 ### Исследование:
 
-Для исследования был написан отчет на SQL.
+Для исследования мной был написан отчет на SQL.
+
+<img src="https://github.com/user-attachments/assets/b949c11c-c462-43f9-a55e-705722e3b158" width="600" height="300">
+
+
+<img src="https://github.com/user-attachments/assets/2eb61083-4c1b-41bf-b57b-5781ec4b84aa" width="305" height="300">
+
+
 
 Предлагаемый процесс:
 предлагаем ввести gpt 
