@@ -35,8 +35,7 @@
 
 ### Исследование:
 
-Для исследования мной был написан отчет на SQL
-hotels-notification-analyser.md
+Для исследования мной был написан [отчет](https://github.com/KazzarmenkovaSofia/notification-automation-process/blob/main/hotels-notification-analyser.md) на SQL
 
 <img src="https://github.com/user-attachments/assets/b949c11c-c462-43f9-a55e-705722e3b158" width="595" height="295">
 
@@ -49,9 +48,6 @@ hotels-notification-analyser.md
 предлагаем ввести gpt 
 написать to be 
 
-предполагаемые цифры 
-
-прикладываю ссылочку на отчет по SD 
 
 Проверяем эфективность бота - прикладываем бот выгрузку 
 результат 80% удачных писем
