@@ -111,3 +111,53 @@ SELECT * FROM sd_sla_notification
 |2024-05-28   16:47:31 | 00:42:08.423624 | 16114158|
 |2024-07-25   18:13:57 | 00:20:19.506387 | 17074465|
 |2024-07-02   16:50:09 | 06:10:29.872216 | 16687136|
+
+### Counting percentile Forge tickets SLA of every month | SD SLA: Считаем процентили по каждому месяцу
+
+```sql
+drop table if exists sd_sla_percentile;
+create table sd_sla_percentile as
+
+SELECT EXTRACT(year from createdon_case_dttm) as yy,
+EXTRACT(month from createdon_case_dttm) as mes, 
+to_char(createdon_case_dttm, 'Month') AS month_name,
+PERCENTILE_CONT(0.75) WITHIN GROUP(ORDER BY time_work) as seven_percentile,
+PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY time_work) as fifth_percentile,
+PERCENTILE_CONT(0.3) WITHIN GROUP(ORDER BY time_work) as thirth_percentile
+FROM sd_sla_notification
+GROUP BY yy,mes,month_name;
+
+SELECT * FROM sd_sla_percentile
+ORDER BY yy,mes
+```
+
+|yy | mes | month_name | seven_percentile | fifth_percentile | thirth_percentile|
+|--- | --- | --- | --- | --- | ---|
+|2024 | 5 | May | 00:52:55.545736 | 00:30:38.082359 | 00:19:51.782969|
+|2024 | 6 | June | 02:10:48.814824 | 00:51:38.146207 | 00:28:16.921855|
+|2024 | 7 | July | 04:05:32.121691 | 01:46:43.942986 | 00:43:45.943785|
+
+### Counting possible savings | Считаем возможную экономию
+
+```sql
+drop table if exists sd_sla_percentile;
+create table sd_sla_percentile as
+
+SELECT EXTRACT(year from createdon_case_dttm) as yy,
+EXTRACT(month from createdon_case_dttm) as mes, 
+to_char(createdon_case_dttm, 'Month') AS month_name,
+PERCENTILE_CONT(0.75) WITHIN GROUP(ORDER BY time_work) as seven_percentile,
+PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY time_work) as fifth_percentile,
+PERCENTILE_CONT(0.3) WITHIN GROUP(ORDER BY time_work) as thirth_percentile
+FROM sd_sla_notification
+GROUP BY yy,mes,month_name;
+
+SELECT * FROM sd_sla_percentile
+ORDER BY yy,mes
+```
+
+|yy | mes | month_name | seven_percentile | fifth_percentile | thirth_percentile|
+|--- | --- | --- | --- | --- | ---|
+|2024 | 5 | May | 00:52:55.545736 | 00:30:38.082359 | 00:19:51.782969|
+|2024 | 6 | June | 02:10:48.814824 | 00:51:38.146207 | 00:28:16.921855|
+|2024 | 7 | July | 04:05:32.121691 | 01:46:43.942986 | 00:43:45.943785|
