@@ -140,24 +140,56 @@ ORDER BY yy,mes
 ### Counting possible savings | Считаем возможную экономию
 
 ```sql
-drop table if exists sd_sla_percentile;
-create table sd_sla_percentile as
-
-SELECT EXTRACT(year from createdon_case_dttm) as yy,
-EXTRACT(month from createdon_case_dttm) as mes, 
-to_char(createdon_case_dttm, 'Month') AS month_name,
-PERCENTILE_CONT(0.75) WITHIN GROUP(ORDER BY time_work) as seven_percentile,
-PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY time_work) as fifth_percentile,
-PERCENTILE_CONT(0.3) WITHIN GROUP(ORDER BY time_work) as thirth_percentile
-FROM sd_sla_notification
-GROUP BY yy,mes,month_name;
-
-SELECT * FROM sd_sla_percentile
-ORDER BY yy,mes
+SELECT
+DATE_PART('hour',PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY seven_percentile)*(
+    SELECT ROUND(PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY sd_amount)) as median
+    FROM sd_notification_mes
+    ))*300 as экономия_руб_максимум_до,
+DATE_PART('hour',PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY fifth_percentile)*(
+    SELECT ROUND(PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY sd_amount)) as median
+    FROM sd_notification_mes
+    ))*300 as экономия_руб_среднее_до,
+DATE_PART('hour',PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY thirth_percentile)*(
+    SELECT ROUND(PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY sd_amount)) as median
+    FROM sd_notification_mes
+    ))*300 as экономия_руб_минимум_до
+FROM sd_sla_percentile
 ```
 
-|yy | mes | month_name | seven_percentile | fifth_percentile | thirth_percentile|
-|--- | --- | --- | --- | --- | ---|
-|2024 | 5 | May | 00:52:55.545736 | 00:30:38.082359 | 00:19:51.782969|
-|2024 | 6 | June | 02:10:48.814824 | 00:51:38.146207 | 00:28:16.921855|
-|2024 | 7 | July | 04:05:32.121691 | 01:46:43.942986 | 00:43:45.943785|
+|экономия_руб_максимум_до | экономия_руб_среднее_до | экономия_руб_минимум_до|
+|--- | --- | ---|
+|5902200 | 2329800 | 1275900|
+
+
+### Classification by topic | Классификация по тематикам SD
+
+```sql
+drop table if exists sd_notification_thems;
+create table sd_notification_thems as
+
+SELECT createdon_case_dttm , 
+case_solution_dttm , 
+case_solution_dttm-createdon_case_dttm as time_work,
+number , 
+nohtmlsymptoms ,
+CASE
+WHEN nohtmlsymptoms LIKE('%врем% заезда%')
+THEN 'Время заезда'
+WHEN nohtmlsymptoms LIKE('%номер телефона%') OR nohtmlsymptoms LIKE('%свяжитесь%') OR nohtmlsymptoms LIKE('%связаться%') 
+OR nohtmlsymptoms LIKE('%напишите нам%') OR nohtmlsymptoms LIKE('просит связаться')OR nohtmlsymptoms LIKE('%инструкци% по заселению%')
+THEN 'Связь с отелем'
+WHEN nohtmlsymptoms LIKE('%актуально%')
+THEN 'Актуальность брони'
+WHEN nohtmlsymptoms LIKE('%самостоятельн%') OR nohtmlsymptoms LIKE('%дистанцион%') OR nohtmlsymptoms LIKE('%бесконтактн%')
+OR nohtmlsymptoms LIKE('%самозаселение%') OR nohtmlsymptoms LIKE('%без ресепш%')
+THEN 'Бесконтактное заселение'
+WHEN nohtmlsymptoms LIKE('%депозит%') OR nohtmlsymptoms LIKE('%предоплат%') OR nohtmlsymptoms LIKE('Предоплат%') OR nohtmlsymptoms LIKE('%оплат%')
+OR nohtmlsymptoms LIKE('Депозит%') OR nohtmlsymptoms LIKE('%внес%') OR nohtmlsymptoms LIKE('%переве%')
+THEN 'Предоплата'
+ELSE 'Не распознано'
+END AS tematika
+FROM sd_notification;
+
+SELECT * FROM sd_notification_thems
+```
+
