@@ -48,8 +48,9 @@
 Так как направление развивается и к нам подключается все больше и больше отелей, то количество информирований будет расти. В зависимости от сезонности их будет сложнее контролировать. Предлагается перевести этот процесс на автоматическую отправку, заменив ручную проверку и подготовку писем на Open AI. 
 
 ### Процесс TO BE:
-1. Отель отправляет информирование на
-
+![image](https://github.com/KazzarmenkovaSofia/notification-automation-process/blob/main/Hotel%20notification%20Forge%20escenario.png)
+![image](https://github.com/KazzarmenkovaSofia/notification-automation-process/blob/main/C%D1%85%D0%B5%D0%BC%D0%B0%20%D0%B2%D0%B7%D0%B0%D0%B8%D0%BC%D0%BE%D0%B4%D0%B5%D0%B9%D1%81%D1%82%D0%B2%D0%B8%D1%8F%20TCRM%20%D0%B8%20Forge.png)
+![image](https://github.com/KazzarmenkovaSofia/notification-automation-process/blob/main/Open%20AI%20road.png)
 
 Проверяем эфективность бота - прикладываем бот выгрузку 
 результат 80% удачных писем
