@@ -1,5 +1,5 @@
 # notification-automation-process
-## Ведение процесса автоматизации нотификаций отелей на первой линии
+## Ведение процесса автоматизации нотификаций отелей
 
 Отели могут нотифицировать клиентов по конкретным бронированиям. 
 
@@ -82,8 +82,8 @@
 В среднем 3 000 000 RUB  в год
 
 ---
-# notification-automation-process
-## Managing the Hotel Notification Automation Process on the Front Line
+
+## Managing the Hotel Notification Automation Process
 
 Hotels may send notifications to customers regarding specific bookings.
 
@@ -139,5 +139,53 @@ It is proposed to transfer this process to automated sending, replacing manual r
 ### TO BE Process:
 
 1. The hotel sends an email to our mailbox (arrives in Outlook).
-2. This mailbox is linked to the Forge ticketing system. When an email arrives, Forge
+2. This mailbox is linked to the Forge ticketing system. When an email arrives, Forge creates an SD ticket linked to the message.
+3. The email is then routed according to a scenario, because the hotel may send not only customer notifications (below is the Forge scenario I designed):
+
+![image](https://github.com/KazzarmenkovaSofia/notification-automation-process/blob/main/Hotel%20notification%20Forge%20escenario.png)
+
+4. If the ticket is routed to the customer-notification queue, the CRM system creates a task containing the email text, which is then processed by the CRM bot using a procedure I developed:
+
+![image](https://github.com/KazzarmenkovaSofia/notification-automation-process/blob/main/C%D1%85%D0%B5%D0%BC%D0%B0%20%D0%B2%D0%B7%D0%B0%D0%B8%D0%BC%D0%BE%D0%B4%D0%B5%D0%B9%D1%81%D1%82%D0%B2%D0%B8%D1%8F%20TCRM%20%D0%B8%20Forge.png)
+
+5. The procedure works as follows:
+   - It reads the description of the newly created task.
+   - Checks for personal data.
+   - If personal data is found, the system masks it using an adapted method. The masked data is stored temporarily.
+   - After masking, the email text is submitted to OpenAI with a predefined prompt requesting customer-friendly rephrasing, removal of unnecessary wording, adjustment of complex phrasing, etc.  
+     The prompt also instructs OpenAI to identify the topic of the email for statistical and process optimization.
+   - After processing, personal data is restored in the output text.
+   - The final message is sent to the customer via bank chat or email.
+
+![image](https://github.com/KazzarmenkovaSofia/notification-automation-process/blob/main/Open%20AI%20road.png)
+
+---
+
+### Reporting & Analysis
+
+1. Analyzed available tools for data extraction: internal notebooks, Helicopter, Sage.
+2. Created a data export in Sage to remove limitations on text content.
+3. Studied the TinkoffPy library to write Python code and work with data from Sage.
+4. Prepared a final report with key metrics important for process planning.
+5. Collected and structured testing results.
+
+---
+
+### 📊 Results
+
+1. ~7,000 cases processed in the first half of the test, later decreasing to ~4,000 (seasonal factor: vacations).
+2. Monthly average — 10,700 cases.
+
+---
+
+### 🛡️ Processing Quality
+
+1. Overall system stability — **97.3%**.
+2. **80%** of communications containing critical errors were successfully corrected.
+
+---
+
+### 💰 Cost Savings
+
+Annual cost savings: **3,000,000 RUB**
 
