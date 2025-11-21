@@ -81,3 +81,63 @@
 ### Сэкономленная стоимость 
 В среднем 3 000 000 RUB  в год
 
+---
+# notification-automation-process
+## Managing the Hotel Notification Automation Process on the Front Line
+
+Hotels may send notifications to customers regarding specific bookings.
+
+**Problem:** There is a large volume of “simple” notifications that only need to be rephrased and forwarded to the customer. Employee resources are spent on repetitive, mechanical work.  
+The goal is to automate this type of communication.
+
+### The AS IS process looks like this:
+
+![image](https://github.com/user-attachments/assets/3f66aa86-7496-4f1b-9596-802123a01477)
+
+**Interaction Parties:**
+
+**Hotel** – the accommodation provider (rooms or apartments).
+
+**Partner** – an intermediary between us and the hotel (involved not in all cases).
+
+**Support Team** – our internal team that relays information to the customer (when the hotel’s message arrives in Outlook). The Support Team is split into two groups: Back Office and Front Line.
+
+**Back Office** – the team that handles complex, complaint-related cases. They receive notifications that appear as part of resolving customer issues.
+
+**Front Line** – primary support agents. They handle “light” requests from customers with predefined scripts. This group receives initial hotel notifications such as check-in rules, deposit requirements, contact details, etc.
+
+The hotel sends a notification for the customer either through a partner or directly. The email is processed by the “Forge” ticketing system, which assigns it to the Front Line or the Back Office.  
+Distribution is based on the email subject.
+
+---
+
+### Scope of the research:
+
+1. Analyze the value and benefits of this automation task.
+2. Identify a tool capable of transforming hotel messages into customer-friendly communication.
+3. Prepare documentation describing the workflow.
+
+---
+
+### Research:
+
+For this project, I prepared an [SQL report](https://github.com/KazzarmenkovaSofia/notification-automation-process/blob/main/hotels-notification-analyser.md).
+
+<img src="https://github.com/user-attachments/assets/b949c11c-c462-43f9-a55e-705722e3b158" width="495" height="195">
+
+<img src="https://github.com/user-attachments/assets/2eb61083-4c1b-41bf-b57b-5781ec4b84aa" width="200" height="195">
+
+---
+
+### Proposed process:
+
+As this direction continues to grow, and more hotels connect to our platform, the volume of notifications will keep increasing. Depending on seasonality, controlling these volumes becomes more difficult.  
+It is proposed to transfer this process to automated sending, replacing manual review and email preparation with OpenAI.
+
+---
+
+### TO BE Process:
+
+1. The hotel sends an email to our mailbox (arrives in Outlook).
+2. This mailbox is linked to the Forge ticketing system. When an email arrives, Forge
+
